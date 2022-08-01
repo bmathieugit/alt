@@ -10,9 +10,8 @@
 
 namespace alt
 {
-  template <typename OUT, typename... Args>
+  template <typename OUT>
   concept Output = requires(OUT &out,
-                            Args &&...args,
                             const StringCRange &s)
   {
     out.append(s);
@@ -32,6 +31,7 @@ namespace alt
     constexpr auto write(Args &&...args) noexcept
     {
       auto out = OUT(forward<Args>(args)...);
+      
       if constexpr (not same_as<decltype(out.result()), void>)
         return out.result();
     }
